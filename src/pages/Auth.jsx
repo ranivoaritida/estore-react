@@ -1,15 +1,29 @@
 import  { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import {AuthContext} from '../context/AuthContext';
- 
+import { useNavigate } from 'react-router-dom'; 
 const Auth = () => {
   const [mode, setMode] = useState("signup");
-  const { signUp, user } = useContext(AuthContext);
+  const [error, setError] = useState(null)
+  const { signUp, user, logout, login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const { register, handleSubmit, formState: {errors} } = useForm(); 
 
   const onSub = (data) => {
-    signUp(data.email, data.password);
+    setError(null);
+    var result;
+    if(mode === "signup"){
+      result =signUp(data.email, data.password);
+    } else{
+      result = login(data.email, data.password);
+    }
+    if(result.success){
+      navigate("/");
+    } else {
+      setError(result.error);
+    }
+    console.log(result);
   }
 
   return (
@@ -18,7 +32,9 @@ const Auth = () => {
         <div className='auth-container'>
           <h1 className='page-title'>{mode === "signup" ? "Sign Up" : "Login"}</h1>
           {user && <p>Welcome {user.email}!</p>}
+          <button onClick={logout} className='btn btn-secondary btn-large'>Logout</button>
           <form className='auth-form' onSubmit={handleSubmit(onSub)}>
+            {error && <div className='error-message'>{error}</div>}
             <div className='form-group'>
               <label className='form-label' htmlFor='email'>Email</label>
               <input type='email' className='form-input' placeholder='Enter your email' id='email'
