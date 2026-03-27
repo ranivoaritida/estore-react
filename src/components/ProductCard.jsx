@@ -8,7 +8,7 @@ const ProductCard = ({product}) => {
         <h3 className='product-card-name'>{product.name}</h3>
         <p className='product-card-price'>${product.price}</p>
         <div className='product-card-actions'>
-            <Link className='btn btn-secondary' to={`/products/${product.id}`}>
+            <Link className='btn btn-secondary' to={`/product/${product.id}`}>
             View details
             </Link>
             <button className='btn btn-primary'>Add to cart</button>
