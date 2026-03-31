@@ -1,11 +1,20 @@
-import  { useState } from 'react';
+import  { useState,useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, useSearchParams } from 'react-router-dom'; 
 const Auth = () => {
-  const [mode, setMode] = useState("signup");
+  const [searchParams] = useSearchParams();
+  const initialMode = searchParams.get("mode") || "signup";
+  const [mode, setMode] = useState(initialMode);
   const [error, setError] = useState(null)
   const { signUp, login } = useAuth();
+  
+  useEffect(() => {
+    const modeUrl = searchParams.get("mode") || "signup";
+    setMode(modeUrl);
+  }, [searchParams])
+  
+
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: {errors} } = useForm(); 
