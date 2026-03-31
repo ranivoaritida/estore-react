@@ -1,6 +1,5 @@
 import { createContext, useState, useContext  } from "react";
 import { getProductById } from "../data/product";
-import { get } from "react-hook-form";
 
 const CartContext = createContext(null);
 

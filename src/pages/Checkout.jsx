@@ -4,11 +4,8 @@ const Checkout = () => {
   const {getCartItemsWithProducts, updateQuantity, removeFromCart, getTotalPrice, clearCart} = useCart();
   const cartItems = getCartItemsWithProducts();
   const totalPrice = getTotalPrice();
-  const handleClearCart = () => {
-    alert('Proceeding to payment. Thank you for your purchase!');
-    clearCart();
-  }
-  function elder(){
+  
+  function handleProceedTopayment(){
     alert('Proceeding to payment. Thank you for your purchase!');
     clearCart();
   }
@@ -51,8 +48,7 @@ const Checkout = () => {
               <p className='checkout-total-label'>Total:</p>
               <p className='checkout-total-value checkout-total-final'>${totalPrice.toFixed(2)}</p>
             </div>
-            <button className='btn btn-primary btn-large btn-block' onClick={elder()}>Proceed to Payment</button>
-
+            <button className='btn btn-primary btn-large btn-block' onClick={handleProceedTopayment}>Proceed to Payment</button>
           </div>
         </div>
       </div>
