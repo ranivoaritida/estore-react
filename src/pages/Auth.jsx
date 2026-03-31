@@ -1,11 +1,20 @@
-import  { useState, useContext } from 'react';
+import  { useState,useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import {AuthContext} from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom'; 
+import { useAuth } from '../context/AuthContext';
+import { useNavigate, useSearchParams } from 'react-router-dom'; 
 const Auth = () => {
-  const [mode, setMode] = useState("signup");
+  const [searchParams] = useSearchParams();
+  const initialMode = searchParams.get("mode") || "signup";
+  const [mode, setMode] = useState(initialMode);
   const [error, setError] = useState(null)
-  const { signUp, user, logout, login } = useContext(AuthContext);
+  const { signUp, login } = useAuth();
+  
+  useEffect(() => {
+    const modeUrl = searchParams.get("mode") || "signup";
+    setMode(modeUrl);
+  }, [searchParams])
+  
+
   const navigate = useNavigate();
 
   const { register, handleSubmit, formState: {errors} } = useForm(); 
@@ -31,8 +40,6 @@ const Auth = () => {
       <div className='container'>
         <div className='auth-container'>
           <h1 className='page-title'>{mode === "signup" ? "Sign Up" : "Login"}</h1>
-          {user && <p>Welcome {user.email}!</p>}
-          <button onClick={logout} className='btn btn-secondary btn-large'>Logout</button>
           <form className='auth-form' onSubmit={handleSubmit(onSub)}>
             {error && <div className='error-message'>{error}</div>}
             <div className='form-group'>
