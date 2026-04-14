@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom'
-import { getProductById } from '../data/product';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { fetchProductById } from '../api/productApi';
  
 const ProductDetails = () => {
     const { id } = useParams();
@@ -12,32 +12,43 @@ const ProductDetails = () => {
     
 
     useEffect(() => {
-      const foundProduct = getProductById(id);
-      if(!foundProduct){
-        navigate('/');
-        return;
-      }
-      setProduct(foundProduct);
-    }, [id])
+      const loadProduct =  async () => {
+        try{
+          const foundProduct =  await fetchProductById(id);
+          if(!foundProduct){
+            navigate('/');
+            return;
+          }
+          setProduct(foundProduct);
+        }
+        catch(error){
+          console.error('Error fetching product:', error);
+          navigate('/');
+        }
+      };
+
+      loadProduct();   
+    }, [id,navigate])
 
     if(!product){
-      return <div className='page'><p>Loading...</p></div>
+      return <div className='page'><p>Loading product...</p></div>
     }
     
-      const productInCard = cartItems.find((items) => items.id === product.id);
+      const productInCart = cartItems.find((items) => items.id === product.id);
     
-      const productQuantity = productInCard ? `(${productInCard.quantity})` : "" ;
+      const productQuantity = productInCart ? `(${productInCart.quantity})` : "" ;
 
   return (
+    
     <div className='page'>
       <div className='container'>
         <div className='product-detail'>
           <div className='product-detail-image'>
-            <img src={product?.image} alt={product?.name} />
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop" alt={product?.name} />
           </div>
           <div className='product-detail-content'>
             <h1 className='product-detail-name'>{product?.name}</h1>
-            <p className='product-detail-price'>{product?.price}</p>
+            <p className='product-detail-price'>{product?.price}$</p>
             <p className='product-detail-description'>{product?.description}</p>
             <button className='btn btn-primary' onClick={() => addToCart(product.id)}>Add to cart {productQuantity}</button>
           </div>

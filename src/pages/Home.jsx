@@ -1,9 +1,26 @@
 import { Link } from 'react-router-dom';
-import { getProducts } from '../data/product';
+//import { getProducts } from '../data/product';
 import ProductCard from '../components/ProductCard';
+import { useEffect, useState } from 'react';
+import { fetchProducts } from '../api/productApi';
 
 const Home = () => {
-  const products = getProducts();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try{
+        const data = await fetchProducts();
+        setProducts(data);
+      }
+      catch(error){
+        console.error('Error fetching products:', error);
+      }
+    };
+    
+    loadProducts();
+  }, []);
+
   return (
     <div className='page'>
       <div className='home-hero'>
