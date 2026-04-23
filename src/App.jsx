@@ -9,7 +9,7 @@ import ProductDetails from './pages/ProductDetails'
 import CartProvider from './context/CartContext'
 
 function App() {
-
+  
   return (
     <AuthProvider>
       <CartProvider>

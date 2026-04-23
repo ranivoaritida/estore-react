@@ -1,8 +1,8 @@
 import { useCart } from '../context/CartContext';
  
 const Checkout = () => {
-  const {getCartItemsWithProducts, updateQuantity, removeFromCart, getTotalPrice, clearCart} = useCart();
-  const cartItems = getCartItemsWithProducts();
+  const {cartItems, updateQuantity, removeFromCart, getTotalPrice, clearCart} = useCart();
+  const cartItem = cartItems;
   const totalPrice = getTotalPrice();
   
   function handleProceedTopayment(){
@@ -17,8 +17,8 @@ const Checkout = () => {
         <div className="checkout-container">
           <div className="checkout-items">
             <h2 className="checkout-section-title">Order summary</h2>
-            {cartItems.map((item) => (
-              <div className="checkout-item" key={item.id}>
+            {cartItem.map((item) => (
+              <div className="checkout-item" key={item.product.id}>
                 <img src={item.product.image} alt={item.product.name} className="checkout-item-image" />
                 <div className="checkout-item-details">
                   <h3 className="checkout-item-name">{item.product.name}</h3>
@@ -26,12 +26,12 @@ const Checkout = () => {
                 </div>
                 <div className="checkout-item-quantity">
                   <div className='quantity-controls'>
-                    <button className='quantity-btn' onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                    <button className='quantity-btn' onClick={() => updateQuantity(item.product.id, item.quantity - 1)}>-</button>
                     <span className='quantity-value'>{item.quantity}</span>
-                    <button className='quantity-btn' onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                    <button className='quantity-btn' onClick={() => updateQuantity(item.product.id, item.quantity + 1)}>+</button>
                   </div>
                   <p className='checkout-item-total'>${(item.product.price * item.quantity).toFixed(2)}</p>
-                  <button className='btn btn-secondary btn-large' onClick={() => removeFromCart(item.id)}>
+                  <button className='btn btn-secondary btn-large' onClick={() => removeFromCart(item.product.id)}>
                     Remove
                   </button>
                 </div>

@@ -1,17 +1,18 @@
 import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+//import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { fetchProductById } from '../api/productApi';
+//import { fetchProductById } from '../api/productApi';
+import { useProductById } from '../hooks/useProducts';
  
 const ProductDetails = () => {
     const { id } = useParams();
     const { addToCart, cartItems } = useCart();
-    const [product, setProduct] = useState(null);
-    const navigate = useNavigate();
+    //const [product, setProduct] = useState(null);
+    //const navigate = useNavigate();
     
 
-    useEffect(() => {
+    /*useEffect(() => {
       const loadProduct =  async () => {
         try{
           const foundProduct =  await fetchProductById(id);
@@ -28,13 +29,17 @@ const ProductDetails = () => {
       };
 
       loadProduct();   
-    }, [id,navigate])
+    }, [id,navigate])*/
+    const { data: product, isLoading, isError } = useProductById(id);
 
-    if(!product){
+    if(isLoading){
       return <div className='page'><p>Loading product...</p></div>
     }
+    if(isError || !product){
+      return <div className='page'><p>Product not found.</p></div>
+    }
     
-      const productInCart = cartItems.find((items) => items.id === product.id);
+      const productInCart = cartItems.find((items) => items.product.id === product.id);
     
       const productQuantity = productInCart ? `(${productInCart.quantity})` : "" ;
 

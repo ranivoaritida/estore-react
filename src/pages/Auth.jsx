@@ -19,13 +19,13 @@ const Auth = () => {
 
   const { register, handleSubmit, formState: {errors} } = useForm(); 
 
-  const onSub = (data) => {
+  const onSub = async  (data) => {
     setError(null);
     var result;
     if(mode === "signup"){
-      result =signUp(data.email, data.password);
+      result = await signUp(data.email, data.password);
     } else{
-      result = login(data.email, data.password);
+      result = await login(data.email, data.password);
     }
     if(result.success){
       navigate("/");

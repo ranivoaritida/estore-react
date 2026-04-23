@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
 //import { getProducts } from '../data/product';
 import ProductCard from '../components/ProductCard';
-import { useEffect, useState } from 'react';
-import { fetchProducts } from '../api/productApi';
+//import { fetchProducts } from '../api/productApi';
+import { useProducts } from '../hooks/useProducts';
+
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
+  /*const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -19,7 +20,11 @@ const Home = () => {
     };
     
     loadProducts();
-  }, []);
+  }, []);*/
+ 
+  
+
+  const { data: products } = useProducts();
 
   return (
     <div className='page'>
@@ -30,7 +35,7 @@ const Home = () => {
       <div className='container'>
         <h2 className='page-title'>Our Products</h2>
         <div className='product-grid'>
-          {products.map((product) => (
+          {products?.map((product) => (
             <ProductCard product={product} key={product.id} />
           ))}
         </div>

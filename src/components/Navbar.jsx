@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-    const {user,logout} = useAuth();
+    const {user,accessToken,logout} = useAuth();
+    const isAuthenticated = !!accessToken;
+
   return (
     <nav className='navbar'>
         <div className='navbar-container'>
@@ -11,9 +13,9 @@ const Navbar = () => {
             </Link>
             <div className='navbar-links'>
                 <Link to='/'  className='navbar-link'>Home</Link>
-                <Link to='/checkout' className='navbar-link' >Checkout</Link>
+                {isAuthenticated && <Link to='/checkout' className='navbar-link' >Checkout</Link> }
             </div>
-            {!user ? (<div className='navbar-auth'>
+            {!isAuthenticated ? (<div className='navbar-auth'>
                 <div className='navbar-auth-links'>
                     <Link to='/auth?mode=login' className='btn btn-secondary'>Login</Link>
                     <Link to='/auth?mode=signup' className='btn btn-primary'>Signup</Link>
